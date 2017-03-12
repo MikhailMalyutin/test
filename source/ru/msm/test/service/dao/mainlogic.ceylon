@@ -15,7 +15,7 @@ shared String|Exception openAccount(String accountId) {
     return newAccount.password;
 }
 
-Account authenticate(String accountId, String password) {
+shared Account authenticate(String accountId, String password) {
     value prevAccount = getAccount(accountId);
     assert (exists prevAccount);
     assert (prevAccount.password == password);
