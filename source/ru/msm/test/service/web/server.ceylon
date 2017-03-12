@@ -1,8 +1,3 @@
-import net.gyokuro.core {
-    get,
-    Application,
-    post
-}
 import ru.msm.test.service.parsing {
     parseAccountIdJSON,
     getJSon,
@@ -19,13 +14,19 @@ import ru.msm.test.service.dao {
 }
 import ceylon.http.server {
     Request,
-    Response
+    Response,
+    newServer,
+    Endpoint,
+    startsWith,
+    equals
 }
 import ru.msm.test.service.data {
     Account
 }
 import ceylon.http.common {
-    Header
+    Header,
+    post,
+    get
 }
 
 void processAccount(Request req, Response resp) {
@@ -99,9 +100,35 @@ void sendUnauthorized(Response resp) {
 }
 
 shared void startHttpServer() {
-    post("/account", processAccount);
-    post("/register", processRegister);
-    get("/statistic/:accountId", processStatistic);
-    get("*", processRedirect);
-    Application().run();
+    value server = newServer {
+        //an endpoint, on the path /hello
+        Endpoint {
+            path = equals("/account");
+            processAccount;
+            acceptMethod = [post];
+        },
+        Endpoint {
+            path = equals("/register");
+            processRegister;
+            acceptMethod = [post];
+        },
+        Endpoint {
+            path = startsWith("/statistic");
+            processRegister;
+            acceptMethod = [get];
+        },
+        Endpoint {
+            path = startsWith("/");
+            processRedirect;
+            acceptMethod = [get];
+        }
+    };
+    server.start();
+//
+//
+//    post("/account", processAccount);
+//    post("/register", processRegister);
+//    get("/statistic/:accountId", processStatistic);
+//    get("*", processRedirect);
+//    Application().run();
 }

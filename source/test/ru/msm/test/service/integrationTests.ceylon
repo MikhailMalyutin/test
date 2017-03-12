@@ -27,7 +27,7 @@ Uri getUrl(String? login, String? password, String* paths) {
     value uri = Uri {
         scheme = "http";
         authority = Authority {
-            host = "0.0.0.0";
+            host = "127.0.0.1";
             user = login;
             password = password;
             port = 8080;
