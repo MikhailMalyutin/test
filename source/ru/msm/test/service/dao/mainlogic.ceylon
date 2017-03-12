@@ -6,7 +6,7 @@ import ru.msm.test.service.utils {
     generatePassword
 }
 import ru.msm.test.service.web.utils {
-    HttpCode
+    RedirectCode
 }
 shared String|Exception openAccount(String accountId) {
     value prevAccount = getAccount(accountId);
@@ -28,7 +28,7 @@ shared Account authenticate(String accountId, String password) {
 shared String registerUrl(
         Account account,
         String url,
-        HttpCode redirectType) {
+        RedirectCode redirectType) {
     return account.register(url, redirectType);
 }
 

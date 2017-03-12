@@ -9,9 +9,12 @@ import ru.msm.test.service {
     log
 }
 
-shared abstract class HttpCode(shared Integer code) of ok | unauthorized | movedPermanently | found {}
-shared object found extends HttpCode(302) {}
-shared object movedPermanently extends HttpCode(301) {}
+shared interface IHttpCode {}
+
+shared abstract class HttpCode(shared Integer code) of ok | unauthorized {}
+shared abstract class RedirectCode(shared Integer code) of movedPermanently | found satisfies IHttpCode {}
+shared object found extends RedirectCode(302) {}
+shared object movedPermanently extends RedirectCode(301) {}
 shared object unauthorized extends HttpCode(401) {}
 shared object ok extends HttpCode(200) {}
 
@@ -26,7 +29,7 @@ shared void sendUnauthorized(Response resp) {
     resp.writeString("Unauthorized");
 }
 
-shared void sendRedirect(Response resp, String url, HttpCode redirectStatus) {
+shared void sendRedirect(Response resp, String url, RedirectCode redirectStatus) {
     resp.status = redirectStatus.code;
     resp.writeString(url);
 }

@@ -11,10 +11,10 @@ import ru.msm.test.service.dao {
     registerShortUrl
 }
 import ru.msm.test.service.web.utils {
-    HttpCode
+    RedirectCode
 }
 
-shared class Url(shared String url, shared String shortUrl, shared HttpCode redirectType) {
+shared class Url(shared String url, shared String shortUrl, shared RedirectCode redirectType) {
     AtomicInteger countAtomic = AtomicInteger();
     shared Integer count => countAtomic.get();
     shared void incrementCount() {
@@ -25,7 +25,7 @@ shared class Url(shared String url, shared String shortUrl, shared HttpCode redi
 shared class Account(shared String accountId, shared String password) {
     HashMap<String, Url> urlToInfoMap = HashMap<String, Url>();
 
-    shared String register(String url, HttpCode redirectType) {
+    shared String register(String url, RedirectCode redirectType) {
         value shortUrl = toShort(url);
         value newUrl = Url(url, shortUrl, redirectType);
         urlToInfoMap.put(url, newUrl);

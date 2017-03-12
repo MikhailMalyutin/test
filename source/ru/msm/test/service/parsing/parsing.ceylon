@@ -6,9 +6,9 @@ import ru.msm.test.service {
     log
 }
 import ru.msm.test.service.web.utils {
-    HttpCode,
     found,
-    movedPermanently
+    movedPermanently,
+    RedirectCode
 }
 shared String parseAccountIdJSON(String json) {
     log.debug(json);
@@ -24,7 +24,7 @@ shared String parseUrlJSON(String json) {
     return parsed.getString("url");
 }
 
-shared HttpCode parseRedirectTypeJSON(String json) {
+shared RedirectCode parseRedirectTypeJSON(String json) {
     log.debug(json);
     value parsed = parse(json);
     assert(is JSONObject parsed);
