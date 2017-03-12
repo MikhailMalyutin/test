@@ -22,8 +22,7 @@ shared Account authenticate(String accountId, String password) {
     return prevAccount;
 }
 
-shared String registerUrl(String accountId, String password, String url, Integer redirectType = 302) {
-    value account = authenticate(accountId, password);
+shared String registerUrl(Account account, String url, Integer redirectType = 302) {
     return account.register(url);
 }
 

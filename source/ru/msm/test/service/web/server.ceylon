@@ -4,11 +4,16 @@ import net.gyokuro.core {
     post
 }
 import ru.msm.test.service.parsing {
-    parseAccountIdJSON
+    parseAccountIdJSON,
+    getJSon,
+    parseUrlJSON,
+    parseRedirectTypeJSON,
+    getShortURLJson
 }
 import ru.msm.test.service.dao {
     openAccount,
-    authenticate
+    authenticate,
+    registerUrl
 }
 import ceylon.http.server {
     Request,
@@ -23,12 +28,29 @@ import ceylon.http.common {
 
 void processAccount(Request req, Response resp) {
     value accountId = parseAccountIdJSON(req.string);
-    value res = openAccount(accountId);
+    value passwordOrException = openAccount(accountId);
+    value json = getJSon(passwordOrException);
+    sendOk(resp, json);
 }
 
 void processRegister(Request req, Response resp) {
-    value accountId = parseAccountIdJSON(req.string);
-    value res = openAccount(accountId);
+    value account = authorize(req);
+    value url = parseUrlJSON(req.string);
+    value redirectType = parseRedirectTypeJSON(req.string);
+    value shortUrl = registerUrl(account, url, redirectType);
+    sendOk(resp, getShortURLJson(shortUrl));
+}
+
+Anything(Request, Response) wrapAuth(String(Account) fn) {
+    void f(Request req, Response resp) {
+        try {
+            Account a = authorize(req);
+            sendOk(resp, fn(a));
+        } catch (Throwable ex) {
+            sendUnauthorized(resp);
+        }
+    }
+    return f;
 }
 
 void processStatistic(Request req, Response resp) {
@@ -51,9 +73,14 @@ void sendOk(Response resp, String str) {
     resp.writeString(str);
 }
 
+void sendUnauthorized(Response resp) {
+    resp.status = 401;
+    resp.writeString("Unauthorized");
+}
+
 shared void startHttpServer() {
     post("/account", processAccount);
-    post("/register", (req, resp) => "Hello, world!");
+    post("/register", processRegister);
     get("/statistic/:AccountId", (req, resp) => "Hello, world!");
     Application().run();
 }
