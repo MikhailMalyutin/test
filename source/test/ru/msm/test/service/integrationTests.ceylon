@@ -10,11 +10,18 @@ import ceylon.http.client {
     get
 }
 import ceylon.http.common {
-    post
+    post,
+    Header
 }
 import ceylon.json {
     JsonObject,
     parse
+}
+import ceylon.test {
+    test
+}
+import ru.msm.test.service.utils {
+    toShort
 }
 Uri getUrl(String? login, String? password, String* paths) {
     value uri = Uri {
@@ -37,9 +44,18 @@ String getit(Uri uri, String json) {
         method = post;
         uri = uri;
         data = json;
+        dataContentType = "application/json";
+        initialHeaders = [Header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")];
     };
     Response response = request.execute();
     return response.contents;
+}
+
+test
+shared void itShouldProduceShortUrls() {
+    value short
+            = toShort("http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1");
+    print(short);
 }
 
 shared void testAll() {

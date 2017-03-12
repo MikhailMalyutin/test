@@ -70,6 +70,10 @@ void processStatistic(Request req, Response resp) {
     sendOk(resp, getStatisticsJSON(statisticsInfo));
 }
 
+void processRedirect(Request req, Response resp) {
+    print("redirect");
+}
+
 String getLogin(Request req) {
     print("getLogin: ``req.queryString``");
     print("Auth headers: ``req.header("Authorization") else ""``");
@@ -98,5 +102,6 @@ shared void startHttpServer() {
     post("/account", processAccount);
     post("/register", processRegister);
     get("/statistic/:accountId", processStatistic);
+    get("*", processRedirect);
     Application().run();
 }

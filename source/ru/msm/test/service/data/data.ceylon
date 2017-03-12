@@ -7,6 +7,9 @@ import ceylon.collection {
 import ru.msm.test.service.utils {
     toShort
 }
+import ru.msm.test.service.dao {
+    registerShortUrl
+}
 
 shared class Url(shared String url, shared String shortUrl) {
     AtomicInteger countAtomic = AtomicInteger();
@@ -20,6 +23,7 @@ shared class Account(shared String accountId, shared String password) {
         value shortUrl = toShort(url);
         value newUrl = Url(url, shortUrl);
         urlToInfoMap.put(url, newUrl);
+        registerShortUrl(shortUrl, newUrl);
         return newUrl.shortUrl;
     }
 
