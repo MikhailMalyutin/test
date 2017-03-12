@@ -1,3 +1,6 @@
+import ru.msm.test.service.web {
+    startHttpServer
+}
 shared void run() {
-    print ("hello world");
+    startHttpServer();
 }
