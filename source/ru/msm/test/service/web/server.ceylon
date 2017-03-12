@@ -8,12 +8,14 @@ import ru.msm.test.service.parsing {
     getJSon,
     parseUrlJSON,
     parseRedirectTypeJSON,
-    getShortURLJson
+    getShortURLJson,
+    getStatisticsJSON
 }
 import ru.msm.test.service.dao {
     openAccount,
     authenticate,
-    registerUrl
+    registerUrl,
+    getAccountStatistics
 }
 import ceylon.http.server {
     Request,
@@ -54,12 +56,15 @@ Anything(Request, Response) wrapAuth(String(Account) fn) {
 }
 
 void processStatistic(Request req, Response resp) {
-    value accountId = parseAccountIdJSON(req.string);
-    value res = openAccount(accountId);
+    value account = authorize(req);
+    value accountId = req.pathParameter("AccountId");
+    assert (exists accountId);
+    value statisticsInfo = getAccountStatistics(account);
+    sendOk(resp, getStatisticsJSON(statisticsInfo));
 }
 
-String getLogin(Request req) => nothing;
-String getPassword(Request req) => nothing;
+String getLogin(Request req) => ""; //TODO
+String getPassword(Request req) => ""; //TODO
 
 Account authorize(Request req) {
     String login = getLogin(req);
@@ -81,6 +86,6 @@ void sendUnauthorized(Response resp) {
 shared void startHttpServer() {
     post("/account", processAccount);
     post("/register", processRegister);
-    get("/statistic/:AccountId", (req, resp) => "Hello, world!");
+    get("/statistic/:AccountId", processStatistic);
     Application().run();
 }

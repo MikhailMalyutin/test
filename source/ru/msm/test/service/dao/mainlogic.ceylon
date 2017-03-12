@@ -26,7 +26,6 @@ shared String registerUrl(Account account, String url, Integer redirectType = 30
     return account.register(url);
 }
 
-shared [<String -> Integer>*] getAccountStatistics(String accountId, String password) {
-    value account = authenticate(accountId, password);
+shared [<String -> Integer>*] getAccountStatistics(Account account) {
     return account.getUrlsInfo().map((Url element) => element.url -> element.count).sequence();
 }

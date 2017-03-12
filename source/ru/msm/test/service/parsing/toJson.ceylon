@@ -22,6 +22,6 @@ shared String getShortURLJson(String shortUrl) {
     }.pretty;
 }
 
-String getStatisticsJSON([<String -> Integer>*] statistics) {
+shared String getStatisticsJSON([<String -> Integer>*] statistics) {
     return JsonObject(statistics).pretty;
 }
