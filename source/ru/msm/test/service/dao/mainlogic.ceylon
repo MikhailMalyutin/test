@@ -1,5 +1,10 @@
-String generatePassword() => "12345";
-
+import ru.msm.test.service.data {
+    Account,
+    Url
+}
+import ru.msm.test.service.utils {
+    generatePassword
+}
 shared String|Exception openAccount(String accountId) {
     value prevAccount = getAccount(accountId);
     if (exists prevAccount) {
@@ -24,5 +29,5 @@ shared String registerUrl(String accountId, String password, String url, Integer
 
 shared [<String -> Integer>*] getAccountStatistics(String accountId, String password) {
     value account = authenticate(accountId, password);
-    return account.getUrlsInfo().map((Url element) => element.url -> element.count.get()).sequence();
+    return account.getUrlsInfo().map((Url element) => element.url -> element.count).sequence();
 }
