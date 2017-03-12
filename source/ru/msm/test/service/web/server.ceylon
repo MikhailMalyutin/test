@@ -38,6 +38,11 @@ import ru.msm.test.service.config {
 import ru.msm.test.service {
     log
 }
+import ru.msm.test.service.web.utils {
+    wrapLogErrors,
+    sendOk,
+    sendUnauthorized
+}
 
 void processAccount(Request req, Response resp) {
     log.debug("processAccount");
@@ -73,18 +78,6 @@ Anything(Request, Response) wrapAuth(String(Account) fn) {
     return f;
 }
 
-Anything(Request, Response) wrapLogErrors(Anything(Request, Response) fn) {
-    void f(Request req, Response resp) {
-        try {
-            fn(req, resp);
-        } catch (Throwable ex) {
-
-            throw ex;
-        }
-    }
-    return f;
-}
-
 void processStatistic(Request req, Response resp) {
     value account = authorize(req);
     value accountId = req.pathParameter("AccountId");
@@ -108,17 +101,6 @@ Account authorize(Request req) {
     String login = getLogin(req);
     String password = getPassword(req);
     return authenticate(login, password);
-}
-
-void sendOk(Response resp, String str) {
-    resp.status = 200;
-    resp.addHeader(Header("Content-Type", "application/json" ));
-    resp.writeString(str);
-}
-
-void sendUnauthorized(Response resp) {
-    resp.status = 401;
-    resp.writeString("Unauthorized");
 }
 
 shared void startHttpServer() {
