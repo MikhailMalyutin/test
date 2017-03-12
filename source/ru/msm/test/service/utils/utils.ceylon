@@ -10,11 +10,12 @@ import java.util {
 }
 import ru.msm.test.service.config {
     serverPort,
-    serverName
+    serverName,
+    defaultPasswordLenght
 }
 shared String generatePassword() {
     value uuid = UUID.randomUUID().string;
-    value pass = toMD5Base64(uuid).substring(0, 10);
+    value pass = toMD5Base64(uuid).substring(0, defaultPasswordLenght);
     return pass;
 }
 
