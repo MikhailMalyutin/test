@@ -12,11 +12,17 @@ import ceylon.http.client {
 import ceylon.http.common {
     post
 }
-Uri getUrl(String* paths) {
+import ceylon.json {
+    JsonObject,
+    parse
+}
+Uri getUrl(String? login, String? password, String* paths) {
     value uri = Uri {
         scheme = "http";
         authority = Authority {
             host = "0.0.0.0";
+            user = login;
+            password = password;
             port = 8080;
         };
         path = Path {
@@ -37,14 +43,15 @@ String getit(Uri uri, String json) {
 }
 
 shared void testAll() {
-    value accountURI = getUrl("account");
-    value registerURI = getUrl("register");
-    value passwordJSON = getit(accountURI, """{ "AccountId" : "myAccountId"}""");
+    value accountURI = getUrl(null, null, "account");
+    value accountId = "myAccountId";
+    value registerURI = getUrl(accountId, "12345", "register");
+    print(registerURI);
+    value passwordJSON = getit(accountURI, "{ \"AccountId\" : \"``accountId``\"}");
     print(passwordJSON);
     value content = getit(registerURI,
-        """ {
-             url: 'http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1',
-             redirectType : 301
-            }""");
+        JsonObject {
+            "url" -> "http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1",
+            "redirectType" -> 301}.pretty);
     print(content);
 }

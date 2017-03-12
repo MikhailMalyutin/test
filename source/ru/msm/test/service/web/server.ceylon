@@ -37,11 +37,17 @@ void processAccount(Request req, Response resp) {
 }
 
 void processRegister(Request req, Response resp) {
-    value account = authorize(req);
-    value url = parseUrlJSON(req.read());
-    value redirectType = parseRedirectTypeJSON(req.read());
-    value shortUrl = registerUrl(account, url, redirectType);
-    sendOk(resp, getShortURLJson(shortUrl));
+    try {
+        value account = authorize(req);
+        value json = req.read();
+        value url = parseUrlJSON(json);
+        value redirectType = parseRedirectTypeJSON(json);
+        value shortUrl = registerUrl(account, url, redirectType);
+        sendOk(resp, getShortURLJson(shortUrl));
+    } catch (Throwable ex) {
+        ex.printStackTrace();
+        throw ex;
+    }
 }
 
 Anything(Request, Response) wrapAuth(String(Account) fn) {
@@ -64,7 +70,11 @@ void processStatistic(Request req, Response resp) {
     sendOk(resp, getStatisticsJSON(statisticsInfo));
 }
 
-String getLogin(Request req) => "myAccountId"; //TODO
+String getLogin(Request req) {
+    print("getLogin: ``req.queryString``");
+    print("Auth headers: ``req.header("Authorization") else ""``");
+    return "myAccountId";
+} //TODO
 String getPassword(Request req) => "12345"; //TODO
 
 Account authorize(Request req) {
