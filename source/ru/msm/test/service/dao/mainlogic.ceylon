@@ -22,10 +22,15 @@ shared Account authenticate(String accountId, String password) {
     return prevAccount;
 }
 
-shared String registerUrl(Account account, String url, Integer redirectType = 302) {
-    return account.register(url);
+shared String registerUrl(
+        Account account,
+        String url,
+        Integer redirectType) {
+    return account.register(url, redirectType);
 }
 
 shared [<String -> Integer>*] getAccountStatistics(Account account) {
-    return account.getUrlsInfo().map((Url element) => element.url -> element.count).sequence();
+    return account.getUrlsInfo()
+        .map((Url url) => url.url -> url.count)
+        .sequence();
 }

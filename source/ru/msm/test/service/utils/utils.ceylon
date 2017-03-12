@@ -4,15 +4,27 @@ import java.lang {
 import java.security {
     MessageDigest
 }
-import ceylon.buffer.base {
-    base64StringStandard
-}
 import java.util {
-    Base64
+    Base64,
+    UUID
 }
-shared String generatePassword() => "12345"; //TODO
+import ru.msm.test.service.config {
+    serverPort,
+    serverName
+}
+shared String generatePassword() {
+    value uuid = UUID.randomUUID().string;
+    value pass = toMD5Base64(uuid).substring(0, 10);
+    return pass;
+}
+
 shared String toShort(String url) {
-    value jstr = JString(url);
+    value md5b64 = toMD5Base64(url);
+    return "http://``serverName``:``serverPort``/``md5b64``";
+}
+
+String toMD5Base64(String str) {
+    value jstr = JString(str);
     MessageDigest md = MessageDigest.getInstance("MD5");
     value thedigest = md.digest(jstr.getBytes("UTF-8"));
     return Base64.encoder.encodeToString(thedigest);

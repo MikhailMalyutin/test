@@ -21,16 +21,21 @@ import ceylon.test {
     test
 }
 import ru.msm.test.service.utils {
-    toShort
+    toShort,
+    generatePassword
+}
+import ru.msm.test.service.config {
+    serverName,
+    serverPort
 }
 Uri getUrl(String? login, String? password, String* paths) {
     value uri = Uri {
         scheme = "http";
         authority = Authority {
-            host = "127.0.0.1";
+            host = serverName;
             user = login;
             password = password;
-            port = 8080;
+            port = serverPort;
         };
         path = Path {
             segments = [PathSegment("")].chain(paths.map( (n) => PathSegment(n) )).sequence();
@@ -56,6 +61,13 @@ shared void itShouldProduceShortUrls() {
     value short
             = toShort("http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1");
     print(short);
+}
+
+test
+shared void itShouldGenerateRandomPasswords() {
+    value password
+            = generatePassword();
+    print(password);
 }
 
 shared void testAll() {

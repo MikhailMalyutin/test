@@ -28,6 +28,13 @@ import ceylon.http.common {
     post,
     get
 }
+import ceylon.io {
+    SocketAddress
+}
+import ru.msm.test.service.config {
+    serverName,
+    serverPort
+}
 
 void processAccount(Request req, Response resp) {
     print("processAccount");
@@ -101,7 +108,6 @@ void sendUnauthorized(Response resp) {
 
 shared void startHttpServer() {
     value server = newServer {
-        //an endpoint, on the path /hello
         Endpoint {
             path = equals("/account");
             processAccount;
@@ -123,12 +129,5 @@ shared void startHttpServer() {
             acceptMethod = [get];
         }
     };
-    server.start();
-//
-//
-//    post("/account", processAccount);
-//    post("/register", processRegister);
-//    get("/statistic/:accountId", processStatistic);
-//    get("*", processRedirect);
-//    Application().run();
+    server.start(SocketAddress(serverName, serverPort));
 }
