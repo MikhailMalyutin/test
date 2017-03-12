@@ -5,6 +5,11 @@ import ceylon.json {
 import ru.msm.test.service {
     log
 }
+import ru.msm.test.service.web.utils {
+    HttpCode,
+    found,
+    movedPermanently
+}
 shared String parseAccountIdJSON(String json) {
     log.debug(json);
     value parsed = parse(json);
@@ -19,9 +24,14 @@ shared String parseUrlJSON(String json) {
     return parsed.getString("url");
 }
 
-shared Integer parseRedirectTypeJSON(String json) {
+shared HttpCode parseRedirectTypeJSON(String json) {
     log.debug(json);
     value parsed = parse(json);
     assert(is JSONObject parsed);
-    return parsed.getIntegerOrNull("redirectType") else 302;
+    value redirectType = parsed.getIntegerOrNull("redirectType") else found.code;
+    if (redirectType == movedPermanently.code) {
+        return movedPermanently;
+    }
+    assert (redirectType == found.code);
+    return found;
 }

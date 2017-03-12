@@ -5,6 +5,9 @@ import ru.msm.test.service.data {
 import ru.msm.test.service.utils {
     generatePassword
 }
+import ru.msm.test.service.web.utils {
+    HttpCode
+}
 shared String|Exception openAccount(String accountId) {
     value prevAccount = getAccount(accountId);
     if (exists prevAccount) {
@@ -25,7 +28,7 @@ shared Account authenticate(String accountId, String password) {
 shared String registerUrl(
         Account account,
         String url,
-        Integer redirectType) {
+        HttpCode redirectType) {
     return account.register(url, redirectType);
 }
 

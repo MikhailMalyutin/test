@@ -10,7 +10,8 @@ import ru.msm.test.service.dao {
     openAccount,
     authenticate,
     registerUrl,
-    getAccountStatistics
+    getAccountStatistics,
+    getUrlForShort
 }
 import ceylon.http.server {
     Request,
@@ -42,7 +43,8 @@ import ru.msm.test.service.web.utils {
     sendOk,
     sendUnauthorized,
     getLogin,
-    getPassword
+    getPassword,
+    sendRedirect
 }
 
 void processAccount(Request req, Response resp) {
@@ -89,6 +91,10 @@ void processStatistic(Request req, Response resp) {
 
 void processRedirect(Request req, Response resp) {
     log.debug("redirect");
+    value shortUrl = req.string;
+    value url = getUrlForShort(shortUrl);
+    url.incrementCount();
+    sendRedirect(resp, url.url, url.redirectType);
 }
 
 Account authorize(Request req) {
