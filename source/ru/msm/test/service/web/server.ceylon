@@ -35,9 +35,12 @@ import ru.msm.test.service.config {
     serverName,
     serverPort
 }
+import ru.msm.test.service {
+    log
+}
 
 void processAccount(Request req, Response resp) {
-    print("processAccount");
+    log.debug("processAccount");
     value accountId = parseAccountIdJSON(req.read());
     value passwordOrException = openAccount(accountId);
     value json = getJSon(passwordOrException);
@@ -53,7 +56,7 @@ void processRegister(Request req, Response resp) {
         value shortUrl = registerUrl(account, url, redirectType);
         sendOk(resp, getShortURLJson(shortUrl));
     } catch (Throwable ex) {
-        ex.printStackTrace();
+        log.error(ex.message, ex);
         throw ex;
     }
 }
@@ -70,6 +73,18 @@ Anything(Request, Response) wrapAuth(String(Account) fn) {
     return f;
 }
 
+Anything(Request, Response) wrapLogErrors(Anything(Request, Response) fn) {
+    void f(Request req, Response resp) {
+        try {
+            fn(req, resp);
+        } catch (Throwable ex) {
+
+            throw ex;
+        }
+    }
+    return f;
+}
+
 void processStatistic(Request req, Response resp) {
     value account = authorize(req);
     value accountId = req.pathParameter("AccountId");
@@ -79,12 +94,12 @@ void processStatistic(Request req, Response resp) {
 }
 
 void processRedirect(Request req, Response resp) {
-    print("redirect");
+    log.debug("redirect");
 }
 
 String getLogin(Request req) {
-    print("getLogin: ``req.queryString``");
-    print("Auth headers: ``req.header("Authorization") else ""``");
+    log.debug("getLogin: ``req.queryString``");
+    log.debug("Auth headers: ``req.header("Authorization") else ""``");
     return "myAccountId";
 } //TODO
 String getPassword(Request req) => "12345"; //TODO
@@ -110,22 +125,22 @@ shared void startHttpServer() {
     value server = newServer {
         Endpoint {
             path = equals("/account");
-            processAccount;
+            wrapLogErrors(processAccount);
             acceptMethod = [post];
         },
         Endpoint {
             path = equals("/register");
-            processRegister;
+            wrapLogErrors(processRegister);
             acceptMethod = [post];
         },
         Endpoint {
             path = startsWith("/statistic");
-            processRegister;
+            wrapLogErrors(processRegister);
             acceptMethod = [get];
         },
         Endpoint {
             path = startsWith("/");
-            processRedirect;
+            wrapLogErrors(processRedirect);
             acceptMethod = [get];
         }
     };
