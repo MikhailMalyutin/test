@@ -6,16 +6,14 @@ import ceylon.uri {
 }
 import ceylon.http.client {
     Request,
-    Response,
-    get
+    Response
 }
 import ceylon.http.common {
     post,
     Header
 }
 import ceylon.json {
-    JsonObject,
-    parse
+    JsonObject
 }
 import ceylon.test {
     test

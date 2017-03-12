@@ -24,7 +24,6 @@ import ru.msm.test.service.data {
     Account
 }
 import ceylon.http.common {
-    Header,
     post,
     get
 }
@@ -41,7 +40,9 @@ import ru.msm.test.service {
 import ru.msm.test.service.web.utils {
     wrapLogErrors,
     sendOk,
-    sendUnauthorized
+    sendUnauthorized,
+    getLogin,
+    getPassword
 }
 
 void processAccount(Request req, Response resp) {
@@ -89,13 +90,6 @@ void processStatistic(Request req, Response resp) {
 void processRedirect(Request req, Response resp) {
     log.debug("redirect");
 }
-
-String getLogin(Request req) {
-    log.debug("getLogin: ``req.queryString``");
-    log.debug("Auth headers: ``req.header("Authorization") else ""``");
-    return "myAccountId";
-} //TODO
-String getPassword(Request req) => "12345"; //TODO
 
 Account authorize(Request req) {
     String login = getLogin(req);
