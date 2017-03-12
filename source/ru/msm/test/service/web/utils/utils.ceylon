@@ -11,7 +11,7 @@ import ru.msm.test.service {
 
 shared interface IHttpCode {}
 
-shared abstract class HttpCode(shared Integer code) of ok | unauthorized {}
+shared abstract class HttpCode(shared Integer code) of ok | unauthorized satisfies IHttpCode {}
 shared abstract class RedirectCode(shared Integer code) of movedPermanently | found satisfies IHttpCode {}
 shared object found extends RedirectCode(302) {}
 shared object movedPermanently extends RedirectCode(301) {}
