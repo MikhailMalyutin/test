@@ -3,6 +3,7 @@ import ceylon.json {
     JSONObject = Object
 }
 shared String parseAccountIdJSON(String json) {
+    print(json);
     value parsed = parse(json);
     assert(is JSONObject parsed);
     return parsed.getString("AccountId");

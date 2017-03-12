@@ -29,7 +29,8 @@ import ceylon.http.common {
 }
 
 void processAccount(Request req, Response resp) {
-    value accountId = parseAccountIdJSON(req.string);
+    print("processAccount");
+    value accountId = parseAccountIdJSON(req.read());
     value passwordOrException = openAccount(accountId);
     value json = getJSon(passwordOrException);
     sendOk(resp, json);
@@ -86,6 +87,6 @@ void sendUnauthorized(Response resp) {
 shared void startHttpServer() {
     post("/account", processAccount);
     post("/register", processRegister);
-    get("/statistic/:AccountId", processStatistic);
+    get("/statistic/:accountId", processStatistic);
     Application().run();
 }
