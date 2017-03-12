@@ -38,8 +38,8 @@ void processAccount(Request req, Response resp) {
 
 void processRegister(Request req, Response resp) {
     value account = authorize(req);
-    value url = parseUrlJSON(req.string);
-    value redirectType = parseRedirectTypeJSON(req.string);
+    value url = parseUrlJSON(req.read());
+    value redirectType = parseRedirectTypeJSON(req.read());
     value shortUrl = registerUrl(account, url, redirectType);
     sendOk(resp, getShortURLJson(shortUrl));
 }
@@ -64,8 +64,8 @@ void processStatistic(Request req, Response resp) {
     sendOk(resp, getStatisticsJSON(statisticsInfo));
 }
 
-String getLogin(Request req) => ""; //TODO
-String getPassword(Request req) => ""; //TODO
+String getLogin(Request req) => "myAccountId"; //TODO
+String getPassword(Request req) => "12345"; //TODO
 
 Account authorize(Request req) {
     String login = getLogin(req);
