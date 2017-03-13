@@ -8,6 +8,9 @@ import ceylon.http.common {
 import ru.msm.test.service {
     log
 }
+import ru.msm.test.service.conversion {
+    parseLoginPassword
+}
 
 shared interface IHttpCode {}
 
@@ -47,9 +50,14 @@ shared Anything(Request, Response) wrapLogErrors(Anything(Request, Response) fn)
 }
 
 shared String getLogin(Request req) {
-    log.debug("getLogin: ``req.queryString``");
-    log.debug("Auth headers: ``req.header("Authorization") else ""``");
-    return "myAccountId";
-} //TODO
+    return getLoginPassword(req).key;
+}
 
-shared String getPassword(Request req) => "12345"; //TODO
+shared String getPassword(Request req) {
+    return getLoginPassword(req).item;
+}
+
+String -> String getLoginPassword(Request req) {
+    value authHeader = req.header("Authorization") else "";
+    return parseLoginPassword(authHeader);
+}

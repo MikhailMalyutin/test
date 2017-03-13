@@ -33,12 +33,18 @@ shared Uri getUrl(String? login, String? password, String* paths) {
 }
 
 shared String getit(Uri uri, String json) {
+    value password = uri.authority.password;
+    value login = uri.authority.user;
+    value initialHeaders =
+            if (exists login, exists password)
+            then [Header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")]
+            else [];
     Request request = Request {
         method = post;
         uri = uri;
         data = json;
         dataContentType = "application/json";
-        initialHeaders = [Header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")];
+        initialHeaders = initialHeaders;
     };
     Response response = request.execute();
     return response.contents;
