@@ -8,7 +8,7 @@ import test.ru.msm.test.service.utils {
 }
 
 String accountId = "myAccountId";
-String password = "dEGrxNClY5";
+String password = "dEGrxNClY5"; //TODO change after calling registerAccount
 
 shared void testUrlRegistration() {
     value registerURI = getUrl(accountId, password, "register");
