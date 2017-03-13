@@ -1,11 +1,3 @@
-import ru.msm.test.service.parsing {
-    parseAccountIdJSON,
-    getJSon,
-    parseUrlJSON,
-    parseRedirectTypeJSON,
-    getShortURLJson,
-    getStatisticsJSON
-}
 import ru.msm.test.service.dao {
     openAccount,
     authenticate,
@@ -45,6 +37,14 @@ import ru.msm.test.service.web.utils {
     getLogin,
     getPassword,
     sendRedirect
+}
+import ru.msm.test.service.conversion {
+    parseUrlJSON,
+    parseRedirectTypeJSON,
+    getShortURLJson,
+    getStatisticsJSON,
+    parseAccountIdJSON,
+    getJSon
 }
 
 void processAccount(Request req, Response resp) {
