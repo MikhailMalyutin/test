@@ -1,6 +1,9 @@
 import ceylon.json {
     JsonObject
 }
+import ru.msm.test.service.utils {
+    encodeToBase64
+}
 String getResultJson(Boolean success, String description, String? password) {
     return JsonObject {
         "success" -> success.string,
@@ -14,6 +17,12 @@ shared String getJSon(String|Exception data) {
     value description = if (is String data) then "Your account is opened" else data.message;
     value password = if (is String data) then data else null;
     return getResultJson(success, description, password);
+}
+
+shared String getBasicAuthHeader(String login, String password) {
+    value stringToEncode = "``login``:``password``";
+    value base64 = encodeToBase64(stringToEncode);
+    return "Basic ``base64``";
 }
 
 shared String getShortURLJson(String shortUrl) {

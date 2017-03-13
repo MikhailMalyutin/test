@@ -34,3 +34,8 @@ String toMD5Base64(String str) {
 shared String decodeBase64Str(String base64) {
     return JString(Base64.decoder.decode(base64), "UTF-8").string;
 }
+
+shared String encodeToBase64(String str) {
+    value jstr = JString(str);
+    return Base64.encoder.encodeToString(jstr.getBytes("UTF-8"));
+}

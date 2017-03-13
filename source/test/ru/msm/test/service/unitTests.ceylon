@@ -11,7 +11,8 @@ import ru.msm.test.service.config {
     defaultPasswordLenght
 }
 import ru.msm.test.service.conversion {
-    parseLoginPassword
+    parseLoginPassword,
+    getBasicAuthHeader
 }
 test
 shared void itShouldProduceShortUrls() {
@@ -35,4 +36,10 @@ shared void itShouldParseBasicAuthHeader() {
     value login -> password = parseLoginPassword("Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
     assertEquals(login, "Aladdin");
     assertEquals(password, "open sesame");
+}
+
+test
+shared void itShouldGenereteBasicAothHeader() {
+    value header = getBasicAuthHeader("Aladdin", "open sesame");
+    assertEquals(header, "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==");
 }
