@@ -10,6 +10,9 @@ import ru.msm.test.service.web.utils {
     movedPermanently,
     RedirectCode
 }
+import ru.msm.test.service.utils {
+    decodeBase64Str
+}
 shared String parseAccountIdJSON(String json) {
     log.debug(json);
     value parsed = parse(json);
@@ -22,6 +25,16 @@ shared String parseUrlJSON(String json) {
     value parsed = parse(json);
     assert(is JSONObject parsed);
     return parsed.getString("url");
+}
+
+shared String -> String parseLoginPassword(String authorizationHeader) {
+    value base64 = authorizationHeader.replace("Basic ", "");
+    value encoded = decodeBase64Str(base64);
+    value splitted = encoded.split(':'.equals);
+    value login = splitted.first;
+    value password = splitted.rest.first;
+    assert(exists password);
+    return login -> password;
 }
 
 shared RedirectCode parseRedirectTypeJSON(String json) {
