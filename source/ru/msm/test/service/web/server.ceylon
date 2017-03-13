@@ -83,8 +83,8 @@ Anything(Request, Response) wrapAuth(String(Account) fn) {
 
 void processStatistic(Request req, Response resp) {
     value account = authorize(req);
-    value accountId = req.pathParameter("AccountId");
-    assert (exists accountId);
+    value accountId = account.accountId;//req.pathParameter("AccountId");
+    //assert (exists accountId);
     value statisticsInfo = getAccountStatistics(account);
     sendOk(resp, getStatisticsJSON(statisticsInfo));
 }
@@ -117,7 +117,7 @@ shared void startHttpServer() {
         },
         Endpoint {
             path = startsWith("/statistic");
-            wrapLogErrors(processRegister);
+            wrapLogErrors(processStatistic);
             acceptMethod = [get];
         },
         Endpoint {
