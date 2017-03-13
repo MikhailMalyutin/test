@@ -34,7 +34,8 @@ shared void sendUnauthorized(Response resp) {
 
 shared void sendRedirect(Response resp, String url, RedirectCode redirectStatus) {
     resp.status = redirectStatus.code;
-    resp.writeString(url);
+    resp.addHeader(Header("Location", url));
+    resp.writeString("");
 }
 
 shared Anything(Request, Response) wrapLogErrors(Anything(Request, Response) fn) {
