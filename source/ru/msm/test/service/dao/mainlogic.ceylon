@@ -8,6 +8,9 @@ import ru.msm.test.service.utils {
 import ru.msm.test.service.web.utils {
     RedirectCode
 }
+import ru.msm.test.service {
+    log
+}
 shared String|Exception openAccount(String accountId) {
     value prevAccount = getAccount(accountId);
     if (exists prevAccount) {
@@ -19,6 +22,7 @@ shared String|Exception openAccount(String accountId) {
 }
 
 shared Account authenticate(String accountId, String password) {
+    print("accountId = ``accountId``:``password``");
     value prevAccount = getAccount(accountId);
     assert (exists prevAccount);
     assert (prevAccount.password == password);

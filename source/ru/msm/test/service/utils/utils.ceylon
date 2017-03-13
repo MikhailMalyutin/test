@@ -21,7 +21,7 @@ shared String generatePassword() {
 
 shared String toShort(String url) {
     value md5b64 = toMD5Base64(url);
-    return "http://``serverName``:``serverPort``/``md5b64``";
+    return "/``md5b64``";
 }
 
 String toMD5Base64(String str) {

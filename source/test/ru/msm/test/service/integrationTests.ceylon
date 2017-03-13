@@ -1,21 +1,23 @@
 import ceylon.json {
-    JsonObject
+    JsonObject,
+    parse
 }
 import test.ru.msm.test.service.utils {
     getUrl,
-    getit
+    getit,
+    parsePassword
 }
 
 shared void testAll() {
     value accountURI = getUrl(null, null, "account");
-    value accountId = "myAccountId";
-    value registerURI = getUrl(accountId, "12345", "register");
-    print(registerURI);
+    value accountId = "myAccountId1";
     value passwordJSON = getit(accountURI, "{ \"AccountId\" : \"``accountId``\"}");
     print(passwordJSON);
+    value registerURI = getUrl(accountId, parsePassword(passwordJSON), "register");
+    print(registerURI);
     value content = getit(registerURI,
         JsonObject {
             "url" -> "http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1",
-            "redirectType" -> 301}.pretty);
+            "redirectType" -> 302}.pretty);
     print(content);
 }

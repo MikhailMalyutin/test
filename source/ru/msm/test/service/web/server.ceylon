@@ -91,7 +91,7 @@ void processStatistic(Request req, Response resp) {
 
 void processRedirect(Request req, Response resp) {
     log.debug("redirect");
-    value shortUrl = req.string;
+    value shortUrl = req.uri;
     value url = getUrlForShort(shortUrl);
     url.incrementCount();
     sendRedirect(resp, url.url, url.redirectType);

@@ -16,6 +16,13 @@ import ceylon.http.common {
     post,
     Header
 }
+import ru.msm.test.service.conversion {
+    getBasicAuthHeader
+}
+import ceylon.json {
+    parse,
+    JsonObject = Object
+}
 shared Uri getUrl(String? login, String? password, String* paths) {
     value uri = Uri {
         scheme = "http";
@@ -37,7 +44,7 @@ shared String getit(Uri uri, String json) {
     value login = uri.authority.user;
     value initialHeaders =
             if (exists login, exists password)
-            then [Header("Authorization", "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==")]
+            then [Header("Authorization", getBasicAuthHeader(login, password))]
             else [];
     Request request = Request {
         method = post;
@@ -48,4 +55,10 @@ shared String getit(Uri uri, String json) {
     };
     Response response = request.execute();
     return response.contents;
+}
+
+shared String parsePassword(String json) {
+    value jsonObj = parse(json);
+    assert(is JsonObject jsonObj);
+    return jsonObj.getString("password");
 }

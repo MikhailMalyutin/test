@@ -21,6 +21,7 @@ shared void registerShortUrl(String shortUrl, Url url) {
 }
 
 shared Url getUrlForShort(String shortUrl) {
+    print(shortUrl);
     value urlInfo = shortToUrlMap.get(shortUrl);
     assert(exists urlInfo);
     return urlInfo;

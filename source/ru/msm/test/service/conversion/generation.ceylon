@@ -4,6 +4,10 @@ import ceylon.json {
 import ru.msm.test.service.utils {
     encodeToBase64
 }
+import ru.msm.test.service.config {
+    serverPort,
+    serverName
+}
 String getResultJson(Boolean success, String description, String? password) {
     return JsonObject {
         "success" -> success.string,
@@ -27,7 +31,7 @@ shared String getBasicAuthHeader(String login, String password) {
 
 shared String getShortURLJson(String shortUrl) {
     return JsonObject {
-        "shortUrl" -> shortUrl
+        "shortUrl" -> "http://``serverName``:``serverPort````shortUrl``"
     }.pretty;
 }
 

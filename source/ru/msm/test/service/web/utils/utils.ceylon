@@ -42,7 +42,7 @@ shared Anything(Request, Response) wrapLogErrors(Anything(Request, Response) fn)
         try {
             fn(req, resp);
         } catch (Throwable ex) {
-
+            log.error(ex.message, ex);
             throw ex;
         }
     }
