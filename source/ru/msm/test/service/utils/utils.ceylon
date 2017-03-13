@@ -9,8 +9,6 @@ import java.util {
     UUID
 }
 import ru.msm.test.service.config {
-    serverPort,
-    serverName,
     defaultPasswordLenght
 }
 shared String generatePassword() {

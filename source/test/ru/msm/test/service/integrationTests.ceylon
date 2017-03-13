@@ -1,6 +1,5 @@
 import ceylon.json {
-    JsonObject,
-    parse
+    JsonObject
 }
 import test.ru.msm.test.service.utils {
     getUrl,
@@ -8,24 +7,10 @@ import test.ru.msm.test.service.utils {
     parsePassword
 }
 
-shared void testAll() {
-    value accountURI = getUrl(null, null, "account");
-    value accountId = "myAccountId1";
-    value passwordJSON = getit(accountURI, "{ \"AccountId\" : \"``accountId``\"}");
-    print(passwordJSON);
-    value registerURI = getUrl(accountId, parsePassword(passwordJSON), "register");
-    print(registerURI);
-    value content = getit(registerURI,
-        JsonObject {
-            "url" -> "http://stackoverflow.com/questions/1567929/website-safe-dataaccess-architecture-question?rq=1",
-            "redirectType" -> 302}.pretty);
-    print(content);
-}
-
 String accountId = "myAccountId";
 String password = "dEGrxNClY5";
 
-shared void testAccountRegistration() {
+shared void testUrlRegistration() {
     value registerURI = getUrl(accountId, password, "register");
     print(registerURI);
     value content = getit(registerURI,

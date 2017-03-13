@@ -8,9 +8,6 @@ import ru.msm.test.service.utils {
 import ru.msm.test.service.web.utils {
     RedirectCode
 }
-import ru.msm.test.service {
-    log
-}
 shared String|Exception openAccount(String accountId) {
     value prevAccount = getAccount(accountId);
     if (exists prevAccount) {
